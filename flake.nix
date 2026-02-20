@@ -7,21 +7,21 @@
   };
 
   outputs = { self, nixpkgs, ... }@inputs:
-    let createDotnetAndroidDevShell = import ./createDotnetAndroidDevShell.nix;
+    let mkUnfrozenDotnetShell = import ./mkUnfrozenDotnetShell.nix;
     in (inputs.utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ]
       (system: {
         devShells = rec {
-          dotnet9AndroidDevShell = createDotnetAndroidDevShell {
+          dotnet9AndroidDevShell = mkUnfrozenDotnetShell {
             inherit system nixpkgs;
             dotnetVersion = "9.0";
           };
-          dotnet10AndroidDevShell = createDotnetAndroidDevShell {
+          dotnet10AndroidDevShell = mkUnfrozenDotnetShell {
             inherit system nixpkgs;
             dotnetVersion = "10.0";
           };
           default = dotnet10AndroidDevShell;
         };
       })) // {
-        lib = { inherit createDotnetAndroidDevShell; };
+        lib = { inherit mkUnfrozenDotnetShell; };
       };
 }
