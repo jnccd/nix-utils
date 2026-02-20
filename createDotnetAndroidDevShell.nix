@@ -34,7 +34,7 @@ in pkgs.mkShell {
 
   shellHook = ''
     set -e
-    export DOTNET_ROOT="$HOME/.dotnet"
+    export DOTNET_ROOT="$HOME/.dotnet${dotnetVersion}"
     export PATH="$DOTNET_ROOT:$PATH"
 
     echo "Entering FHS environment..."
@@ -79,7 +79,7 @@ in pkgs.mkShell {
             ];
           runScript = pkgs.writeShellScript "dotnet-fhs-start" ''
             set -e
-            export DOTNET_ROOT="$HOME/.dotnet"
+            export DOTNET_ROOT="$HOME/.dotnet${dotnetVersion}"
             export PATH="$DOTNET_ROOT:$PATH"
 
             export LD_LIBRARY_PATH=${
@@ -109,7 +109,7 @@ in pkgs.mkShell {
             export ANDROID_NDK_ROOT=${androidNdk}
             export PATH=$ANDROID_SDK_ROOT/tools:$ANDROID_SDK_ROOT/platform-tools:$PATH
 
-            if [ ! -x "$DOTNET_ROOT/dotnet${dotnetVersion}" ]; then
+            if [ ! -x "$DOTNET_ROOT/dotnet" ]; then
               echo "Installing Microsoft .NET SDK..."
               mkdir -p "$DOTNET_ROOT"
               curl -sSL https://dot.net/v1/dotnet-install.sh \
@@ -118,7 +118,7 @@ in pkgs.mkShell {
               echo "Using existing .NET SDK from $DOTNET_ROOT"
             fi
 
-            echo ".NET Desktop + Android Dev Environment ready!"
+            echo ".NET ${dotnetVersion} Desktop + Android Dev Environment ready!"
             exec bash -l
           '';
         }
