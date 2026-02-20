@@ -34,7 +34,7 @@ in pkgs.mkShell {
 
   shellHook = ''
     set -e
-    export DOTNET_ROOT="$HOME/.dotnet${dotnetVersion}"
+    export DOTNET_ROOT="$HOME/.dotnet"
     export PATH="$DOTNET_ROOT:$PATH"
 
     echo "Entering FHS environment..."
@@ -79,7 +79,7 @@ in pkgs.mkShell {
             ];
           runScript = pkgs.writeShellScript "dotnet-fhs-start" ''
             set -e
-            export DOTNET_ROOT="$HOME/.dotnet${dotnetVersion}"
+            export DOTNET_ROOT="$HOME/.dotnet"
             export PATH="$DOTNET_ROOT:$PATH"
 
             export LD_LIBRARY_PATH=${
