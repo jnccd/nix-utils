@@ -19,7 +19,12 @@
             inherit system nixpkgs;
             dotnetVersion = "10.0";
           };
-          default = dotnet10AndroidDevShell;
+          dotnet10DevShell = mkUnfrozenDotnetShell {
+            inherit system nixpkgs;
+            dotnetVersion = "10.0";
+            includeAndroidSdk = false;
+          };
+          default = dotnet10DevShell;
         };
       })) // {
         lib = { inherit mkUnfrozenDotnetShell; };

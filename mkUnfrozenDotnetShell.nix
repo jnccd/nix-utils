@@ -32,10 +32,13 @@ in pkgs.mkShell {
     export DOTNET_ROOT="$HOME/.dotnet"
     export PATH="$DOTNET_ROOT:$PATH"
 
-    export TMPDIR=/var/tmp/dotnet${dotnetVersion}
+    # The TMPDIR var is used by pkgs.buildFHSEnvBubblewrap for the shell dir
+    TMPDIRHASH=$(pwd | md5sum | cut -d ' ' -f 1)
+    export TMPDIR=/var/tmp/dotnet${dotnetVersion}-$TMPDIRHASH
+    rm -r $TMPDIR || true
     mkdir $TMPDIR
 
-    echo "Entering FHS environment..."
+    echo "Entering FHS environment in $TMPDIR..."
     if [ -z "$IN_FHS_SHELL" ]; then
       export IN_FHS_SHELL=1
       exec ${
@@ -121,8 +124,8 @@ in pkgs.mkShell {
               echo "Using existing .NET SDK from $DOTNET_ROOT"
             fi
 
-            echo ".NET ${dotnetVersion} Desktop ${
-              if includeAndroidSdk then "+ Android Dev" else ""
+            echo ".NET ${dotnetVersion} Desktop${
+              if includeAndroidSdk then " + Android Dev" else ""
             } Environment ready!"
             exec bash -l
           '';
