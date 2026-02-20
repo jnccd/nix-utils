@@ -11,10 +11,14 @@
     in (inputs.utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ]
       (system: {
         devShells = rec {
-          dotnet9AndroidDevShell =
-            createDotnetAndroidDevShell system "9.0" nixpkgs;
-          dotnet10AndroidDevShell =
-            createDotnetAndroidDevShell system "10.0" nixpkgs;
+          dotnet9AndroidDevShell = createDotnetAndroidDevShell {
+            inherit system nixpkgs;
+            dotnetVersion = "9.0";
+          };
+          dotnet10AndroidDevShell = createDotnetAndroidDevShell {
+            inherit system nixpkgs;
+            dotnetVersion = "10.0";
+          };
           default = dotnet10AndroidDevShell;
         };
       })) // {

@@ -1,4 +1,6 @@
-system: dotnetVersion: nixpkgs:
+{ nixpkgs, system ? "x86_64-linux", dotnetVersion ? "10.0"
+, androidSdkVersions ? [ "33" "34" ], androidBuildToolsVersions ? [ "34.0.0" ]
+}:
 let
   pkgs = import nixpkgs {
     inherit system;
@@ -9,9 +11,8 @@ let
   };
 
   androidComposition = pkgs.androidenv.composeAndroidPackages {
-    platformVersions =
-      [ "33" "34" ]; # Include both android version 13 + 14 SDKs
-    buildToolsVersions = [ "34.0.0" ];
+    platformVersions = androidSdkVersions;
+    buildToolsVersions = androidBuildToolsVersions;
     includeEmulator = false;
     includeSources = false;
     includeNDK = true;
