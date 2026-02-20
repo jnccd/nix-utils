@@ -37,6 +37,9 @@ in pkgs.mkShell {
     export DOTNET_ROOT="$HOME/.dotnet"
     export PATH="$DOTNET_ROOT:$PATH"
 
+    export TMPDIR=/var/tmp/dotnet${dotnetVersion}
+    mkdir $TMPDIR
+
     echo "Entering FHS environment..."
     if [ -z "$IN_FHS_SHELL" ]; then
       export IN_FHS_SHELL=1
